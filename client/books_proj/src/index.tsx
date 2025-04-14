@@ -1,23 +1,33 @@
 import './index.css';
-import App from './App';
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import reportWebVitals from './reportWebVitals';
-import { BrowserRouter } from "react-router-dom";
+import App                 from './App';
+import React               from 'react';
+import ReactDOM            from 'react-dom/client';
+import { Toaster }         from 'react-hot-toast';
+import reportWebVitals     from './reportWebVitals';
+import { BrowserRouter }   from "react-router-dom";
+import { ErrorBoundary }   from 'react-error-boundary';
 import AuthContextProvider from './Context/AuthContext';
-import { Toaster } from 'react-hot-toast';
+import ErrorFallback       from "./ErrorHandling/ErrorBoundary";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <AuthContextProvider>
-        <Toaster />
-        <App />
-      </AuthContextProvider>
-    </BrowserRouter>
+    <Toaster />
+    <ErrorBoundary 
+      FallbackComponent={ErrorFallback}
+      onError={(error, info) => {
+        console.error("Global error: ", error);
+        console.error("Component Stack: ", info.componentStack);
+      }}>
+      <BrowserRouter>
+        <AuthContextProvider>
+          <App />
+        </AuthContextProvider>
+      </BrowserRouter>
+    </ErrorBoundary>
   </React.StrictMode>
 );
 

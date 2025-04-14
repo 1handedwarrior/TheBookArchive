@@ -5,8 +5,7 @@ import { EyeOff, Eye } from "lucide-react";
 import { useAuthContext } from "../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import StyledLink from "./StyledLink";
-import toast, { Renderable, Toast, ValueFunction } from "react-hot-toast";
-import { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
 
 const RegisterForm: React.FC = () => {
@@ -33,17 +32,19 @@ const RegisterForm: React.FC = () => {
         );
   
         toast.success("Login successful");
-        navigate("/"); 
+        navigate("/");
     }
     catch (err: any) {
-      toast.error(err.response.data[0]);
+      toast.error(err.response.data[0].description);
+      console.log(err);
+      
     }
   }
 
   return (
       <div className="register-container">
         <form onSubmit={handleRegister}>
-        <h2>Register</h2>
+        <h2>Create Account</h2>
           <div className="input-container">
             <input
               required

@@ -8,7 +8,7 @@ import { useAuthContext } from "../Context/AuthContext";
 import toast from "react-hot-toast";
 
 const LoginForm: React.FC = () => {
-    const { user, login }                       = useAuthContext();
+    const { login }                       = useAuthContext();
     const navigate                        = useNavigate();
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [loginCreds, setLoginCreds]     = useState<LoginProps>({
@@ -25,13 +25,7 @@ const LoginForm: React.FC = () => {
             navigate("/");
         }
         catch (err: any) {
-            toast.error(err.response.data);
-            setLoginCreds({
-                username: "",
-                password: ""
-            });
-            console.log(loginCreds);
-            
+            toast.error("Username or password invalid");
         }
     }
 
