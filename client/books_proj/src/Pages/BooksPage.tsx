@@ -29,6 +29,14 @@ const BooksPage: React.FC = () => {
     }
   };
 
+  const addBook = async (newBook: BookProps) => {
+    if (!newBook.image && newBook.isbn) {
+      const imageUrl = await BookApiService.getImage(newBook.isbn);
+      newBook = { ...newBook, image: imageUrl }
+    }
+    setBooks(prev => [...prev, newBook]);
+  };
+
   const deleteBook = async (id?: number) => {
     const deletion = await BookApiService.deleteBook(id);
     if (deletion !== 204) {
@@ -45,8 +53,6 @@ const BooksPage: React.FC = () => {
     fetchBooks();
   }, []);
 
-  if (false) throw new Error("Should get caught by boundary");
-
   return (
     <>
     <Navbar />
@@ -60,16 +66,16 @@ const BooksPage: React.FC = () => {
             <img src={book.image} alt={book.title} className="book-image" />
             <div className="book-info">
               <h2 className="book-title">{book.title}
-                <button onClick={() => deleteBook(book.id)}>🗑️</button>
               </h2>
               <h4 className="book-author">Author: {book.author}</h4>
               <p className="book-summary">{book.summary}</p>
               <p className="book-date"><strong>Published:</strong> {book.publishedOn}</p>
             </div>
+            <button className="delete-btn" onClick={() => deleteBook(book.id)}>🗑️</button>
           </div>
         ))}
       </div>
-      <AddBookPage/>
+      <AddBookPage onBookAdded={addBook}/>
     </div>
   </>
   )

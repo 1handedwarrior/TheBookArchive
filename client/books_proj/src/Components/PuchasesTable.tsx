@@ -2,6 +2,7 @@ import "../Styles/PurchasePage.css";
 import { useState, useEffect } from "react";
 import { PurchaseProps } from "../Interfaces/PurchaseProps";
 import PurchaseApiService from "../Services/PurchaseService";
+import toast from "react-hot-toast";
 
 
 const PurchasesTable: React.FC = () => {
@@ -15,6 +16,18 @@ const PurchasesTable: React.FC = () => {
         catch (err) {
             console.error(err);
             throw err;
+        }
+    }
+
+    const deletePurchase = async (id: number) => {
+        try {
+            await PurchaseApiService.deletePurchase(id);
+            toast.success("Purchase deleted successfully!");
+
+            setPurchases(purchases.filter(prev => prev.id !== id));
+        }
+        catch (err) {
+            console.error("Error deleting purchase: ", err);
         }
     }
     
@@ -45,6 +58,11 @@ const PurchasesTable: React.FC = () => {
                         <td data-label="Date Purchased">
                             {purchase.purchasedOn.substring(0, 10)}
                         </td>
+                            <td>
+                            <button onClick={() => deletePurchase(purchase.id)}>
+                                🗑️
+                            </button>
+                            </td>
                     </tr>
                 ))}
             </tbody>

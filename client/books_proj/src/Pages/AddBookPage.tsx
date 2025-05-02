@@ -3,8 +3,12 @@ import toast from "react-hot-toast";
 import React, { useState } from "react";
 import ApiService from "../Services/BookService";
 import { BookProps } from "../Interfaces/BookProps";
+import { AddBookPageProps } from "../Interfaces/BookProps";
+import { useAuthContext } from "../Context/AuthContext";
 
-const AddBookPage: React.FC = () => {
+const AddBookPage: React.FC<AddBookPageProps> = ({ onBookAdded }) => {
+    const { user } = useAuthContext();
+
     const [book, setBook] = useState<BookProps>({
       title: "",
       author: "",
@@ -23,8 +27,11 @@ const AddBookPage: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       try {
-        await ApiService.addBook(book);
-        toast.success("Book added successfully!");
+        if (!user) return toast.error("You must log in to add books!");
+        const newBook = await ApiService.addBook(book);
+        onBookAdded(newBook);
+
+        toast.success(`${book.title} successfully added!`);
         setBook({
           title: "",
           author: "",

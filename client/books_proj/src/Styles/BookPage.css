@@ -66,3 +66,9 @@
     margin-top: 5px;
   }
   
+
+  .delete-btn:hover {
+    border-radius: 3px;
+    background-color: #c1c1c1;
+    
+  }

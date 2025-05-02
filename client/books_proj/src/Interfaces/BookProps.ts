@@ -7,3 +7,7 @@ export interface BookProps {
     image?: string
     publishedOn : string
 }
+
+export interface AddBookPageProps {
+    onBookAdded: (book: BookProps) => void
+}
