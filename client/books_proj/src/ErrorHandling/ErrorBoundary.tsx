@@ -12,7 +12,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({ error, resetErrorBoundary
             <h2> Oops! Something went wrong </h2>
             
             <div className="error-message">
-                {/* {error.message} */}
+                {error.message}
                 Error in string literal form
             </div>
             
