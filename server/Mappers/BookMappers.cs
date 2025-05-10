@@ -15,10 +15,11 @@ public static class BookMappers
             Summary     = book.Summary,
             PublishedOn = book.PublishedOn,
             Isbn        = book.Isbn,
+            UserId      = book.UserId
         };
     }
 
-    public static Book ToBookFromCreateDto(this CreateBookDto bookDto)
+    public static Book ToBookFromCreateDto(this CreateBookDto bookDto, string userId)
     {
         return new Book
         {
@@ -27,6 +28,7 @@ public static class BookMappers
             Summary     = bookDto.Summary,
             PublishedOn = bookDto.PublishedOn,
             Isbn        = bookDto.Isbn,
+            UserId      = userId
         };
     }
 }

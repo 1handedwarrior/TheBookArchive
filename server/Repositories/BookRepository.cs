@@ -20,31 +20,31 @@ public class BookRepository : IBookRepository
     
     public async Task<List<Book>> GetAllAsync(QueryObject query)
     {
-        var products = _context.Books.AsQueryable();
+        var books = _context.Books.Where(b => b.UserId == query.UserId).AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(query.Title))
         {
-            products = products.Where(b => b.Title == query.Title);
+            books = books.Where(b => b.Title == query.Title);
         }
         
         if (!string.IsNullOrWhiteSpace(query.Author))
         {
-            products = products.Where(b => b.Author == query.Author);
+            books = books.Where(b => b.Author == query.Author);
         }
         
-        return await products.ToListAsync();
+        return await books.ToListAsync();
     }
 
-    public async Task<Book?> GetByIdAsync(int id)
+    public async Task<Book?> GetByIdAsync(int id, string userId)
     {
-        var book = await _context.Books.FindAsync(id);
-
+        var book = await _context.Books.FirstOrDefaultAsync(b => b.Id == id && b.UserId == userId); 
+        
         return book ?? null;
     }
 
-    public async Task<Book> CreateAsync(CreateBookDto bookDto)
+    public async Task<Book> CreateAsync(CreateBookDto bookDto, string userId)
     {
-        var newBook = bookDto.ToBookFromCreateDto();
+        var newBook = bookDto.ToBookFromCreateDto(userId);
 
         await _context.Books.AddAsync(newBook);
         await _context.SaveChangesAsync();
@@ -52,12 +52,12 @@ public class BookRepository : IBookRepository
         return newBook;
     }
 
-    public async Task<Book?> UpdateAsync(int id, UpdateBookDto bookDto)
+    public async Task<Book?> UpdateAsync(int id, UpdateBookDto bookDto, string userId)
     {
-        var book = await _context.Books.FindAsync(id);
+        var book = await _context.Books.FirstOrDefaultAsync(b => b.UserId == userId && b.Id == id);
 
         if (book is null) return null;
-
+        
         book.Title       = bookDto.Title;
         book.Author      = bookDto.Author;
         book.Summary     = bookDto.Summary;
@@ -69,9 +69,9 @@ public class BookRepository : IBookRepository
         return book;
     }
 
-    public async Task<Book?> DeleteAsync(int id)
+    public async Task<Book?> DeleteAsync(int id, string userId)
     {
-        var existingBook = await _context.Books.FindAsync(id);
+        var existingBook = await _context.Books.FirstOrDefaultAsync(b => b.Id == id && b.UserId == userId);
 
         if (existingBook is null) return null;
 

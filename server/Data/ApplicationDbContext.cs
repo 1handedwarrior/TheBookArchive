@@ -14,19 +14,17 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
 
     }
 
-    public DbSet<Book> Books { get; set; } = null!;
-    public DbSet<Purchase> Purchases { get; set; } = null!;
+    public DbSet<Book> Books { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        
-        builder.Entity<Purchase>()
-            .HasMany(p => p.Books)
-            .WithOne()
-            .HasForeignKey(b => b.PurchaseId)
-            .OnDelete(DeleteBehavior.Cascade) 
-            .IsRequired(false);
+
+        builder.Entity<Book>()
+            .HasOne(b => b.User)
+            .WithMany(u => u.Books)
+            .HasForeignKey(b => b.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         // seed the roles, add more here if needed
         List<IdentityRole> roles = 

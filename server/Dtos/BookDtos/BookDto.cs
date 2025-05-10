@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using BooksProj.Models;
 
 namespace BooksProj.Dtos.BookDtos;
 
@@ -20,6 +21,10 @@ public class BookDto
     [MinLength(8)]
     [MaxLength(15)]
     public string Isbn { get; set; } = string.Empty;
+
+    // navigation property
+    public AppUser User { get; set; }
     
-    public int PurchaseId { get; set; }
+    // foreign key
+    public string UserId { get; set; }
 }

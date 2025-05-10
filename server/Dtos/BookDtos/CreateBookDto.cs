@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using BooksProj.Models;
 
 namespace BooksProj.Dtos.BookDtos;
 
@@ -21,4 +22,6 @@ public class CreateBookDto
     [MinLength(8)]
     [MaxLength(15)]
     public string Isbn { get; set; } = string.Empty;
+
+    public required AppUser User { get; set; }
 }

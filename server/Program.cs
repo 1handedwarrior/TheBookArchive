@@ -49,8 +49,6 @@ builder.Services.AddSwaggerGen(option =>
 
 
 builder.Services.AddScoped<IBookRepository, BookRepository>();
-builder.Services.AddScoped<IPurchaseRepository, PurchaseRepository>();
-
 builder.Services.AddScoped<ICacheService, CacheService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
