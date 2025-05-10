@@ -18,10 +18,6 @@ const Navbar: React.FC = () => {
             <StyledLink route="/books" to="">
                 Books
             </StyledLink>
-
-            <StyledLink route="/purchases" to="">
-                Purchases
-            </StyledLink>
             
             <StyledLink route={user ? "/dashboard" : "/login"} to="">
                 {user ? user.username : "Login | Register"}
